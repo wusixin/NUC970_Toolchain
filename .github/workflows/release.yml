@@ -20,10 +20,17 @@ jobs:
 
       - name: Build image
         if: success()
-        run: docker build -t ${GITHUB_REPOSITORY}:${IMAGE_TAG} .
+        run: docker build -t wusixin/nuc970_toolchain:${{ github.ref_name }} .
+        run: docker tag wusixin/nuc970_toolchain:${IMAGE_TAG} wusixin/nuc970_toolchain:latest
 
       - name: Push to docker registry
         if: success()
         uses: actions-hub/docker@master
         with:
-          args: push ${GITHUB_REPOSITORY}:${IMAGE_TAG}
+          args: push wusixin/nuc970_toolchain:${{ github.ref_name }}
+
+      - name: Push latest to docker registry
+        if: success()
+        uses: actions-hub/docker@master
+        with:
+          args: push wusixin/nuc970_toolchain:latest
